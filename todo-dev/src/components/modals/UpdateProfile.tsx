@@ -31,7 +31,14 @@ const UpdateProfile = ({ userInfo }: UserType) => {
   });
 
   const editProfileFn = async (updateData: UpdateProfileType) => {
-    await sdk.request(updateMe(updateData));
+    const request = await sdk.request(
+      updateMe({
+        email: updateData.email,
+        first_name: updateData.first_name,
+        last_name: updateData.last_name,
+        title: updateData.title,
+      }),
+    );
 
     toast.success("successfully update your profile");
     queryClient.refetchQueries({ queryKey: ["me"] });
@@ -55,7 +62,7 @@ const UpdateProfile = ({ userInfo }: UserType) => {
           <ModalContent>
             {(onClose) => (
               <ModalBody>
-                <div className="text-center font-bold">Update NOTE</div>
+                <div className="text-center font-bold">Update Profile</div>
                 <form onSubmit={handleSubmit(editProfileFn)}>
                   <div className="space-y-9">
                     <Input
@@ -115,7 +122,7 @@ const UpdateProfile = ({ userInfo }: UserType) => {
                         radius="sm"
                         size="sm"
                         onPressEnd={onClose}>
-                        Add
+                        Update
                       </Button>
                     </div>
                   </div>
